@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Button ,Form, Divider, Dropdown, Radio, DropdownItemProps} from 'semantic-ui-react';
 
-interface State {
+export interface BasicInfoState {
     idType: string;
     id: string;
     description: string;
@@ -15,10 +15,10 @@ interface State {
 }
 
 interface Props {
-    onSubmit: (state: State) => void
+    onSubmit: (state: BasicInfoState) => void
 }
 
-export class BasicInfoCreator extends React.Component<Props, State> {
+export class BasicInfoCreator extends React.Component<Props, BasicInfoState> {
 
     changeIdType = (e: any, {value: idType}: any) => this.setState(() => ({idType}));
 
@@ -87,20 +87,20 @@ export class BasicInfoCreator extends React.Component<Props, State> {
                                 onChange={this.changeIdType}
                     />
                 </Form.Group>
-                <Form.Group inline>
-                    <Form.Field>
+                <Form.Group>
+                    <Form.Field width={5}>
                         <label>Asset Class</label>
                         <input placeholder='' value={assetClass}
                                onChange={({currentTarget: {value}}) => this.setState(() => ({assetClass: value}))}/>
                     </Form.Field>
-                    <Form.Field>
+                    <Form.Field width={5}>
                         <label>Asset Type</label>
                         <input placeholder='' value={assetType}
                                onChange={({currentTarget: {value}}) => this.setState(() => ({assetType: value}))}/>
                     </Form.Field>
-                    <Form.Field>
+                    <Form.Field width={5}>
                         <label>Currency</label>
-                        <Dropdown value={'USD'} options={currencyOptions} search selection/>
+                        <Dropdown value={'USD'} options={currencyOptions} search selection />
                     </Form.Field>
                 </Form.Group>
                 <Divider horizontal> Other Identifiers </Divider>

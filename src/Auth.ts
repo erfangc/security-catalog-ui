@@ -1,6 +1,7 @@
 import * as auth0 from 'auth0-js';
 import {Auth0DecodedHash} from 'auth0-js';
 import history from './History';
+import axios from 'axios';
 
 const AUTH_CONFIG = {
     domain: 'security-catalog.auth0.com',
@@ -44,11 +45,9 @@ export class Auth {
         localStorage.setItem('access_token', authResult.accessToken);
         localStorage.setItem('id_token', authResult.idToken);
         localStorage.setItem('expires_at', expiresAt);
-        // navigate to the home route
-        this.auth0.client.userInfo(authResult.accessToken, (err, profile) => {
-            console.log(profile);
-        });
-        history.replace('/home');
+        // set axios default header to use the access_token
+        axios.defaults.headers['Authorization'] = `Bearer ${authResult.accessToken}`;
+        history.replace('/');
     }
 
     logout() {
@@ -57,7 +56,7 @@ export class Auth {
         localStorage.removeItem('id_token');
         localStorage.removeItem('expires_at');
         // navigate to the home route
-        history.replace('/home');
+        history.replace('/');
     }
 
     isAuthenticated() {
