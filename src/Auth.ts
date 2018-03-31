@@ -26,10 +26,11 @@ export class Auth {
     handleAuthentication() {
         this.auth0.parseHash((err, authResult) => {
             if (authResult && authResult.accessToken && authResult.idToken) {
+                console.log(authResult);
                 this.setSession(authResult);
-                history.replace('/');
+                history.push('/');
             } else if (err) {
-                history.replace('/');
+                history.push('/');
                 console.log(err);
                 alert(`Error: ${err.error}. Check the console for further details.`);
             }
@@ -37,7 +38,9 @@ export class Auth {
     }
 
     setSession(authResult: Auth0DecodedHash) {
-        // Set the time that the access token will expire at
+        /*
+        Set the time that the access token will expire at
+         */
         if (authResult.expiresIn == null || authResult.accessToken == null || authResult.idToken == null) {
             return;
         }
@@ -45,23 +48,32 @@ export class Auth {
         localStorage.setItem('access_token', authResult.accessToken);
         localStorage.setItem('id_token', authResult.idToken);
         localStorage.setItem('expires_at', expiresAt);
-        // set axios default header to use the access_token
+        /*
+        set axios default header to use the access_token
+         */
         axios.defaults.headers['Authorization'] = `Bearer ${authResult.accessToken}`;
-        history.replace('/');
+        history.push('/');
     }
 
     logout() {
-        // Clear access token and ID token from local storage
+        /*
+        Clear access token and ID token from local storage
+         */
         localStorage.removeItem('access_token');
         localStorage.removeItem('id_token');
         localStorage.removeItem('expires_at');
-        // navigate to the home route
-        history.replace('/');
+        /*
+        navigate to the home route
+         */
+        delete axios.defaults.headers['Authorization'];
+        history.push('/login');
     }
 
     isAuthenticated() {
-        // Check whether the current time is past the
-        // access token's expiry time
+        /*
+        Check whether the current time is past the
+        access token's expiry time
+         */
         let item = localStorage.getItem('expires_at') || '0';
         let expiresAt = JSON.parse(item);
         return new Date().getTime() < expiresAt;

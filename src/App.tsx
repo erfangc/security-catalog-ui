@@ -6,8 +6,17 @@ import {Dashboard} from './dashboard/Dashboard';
 import {Callback} from './Callback';
 import {Header} from './header/Header';
 import {Sidebar} from './sidebar/Sidebar';
+import {Edit} from './edit/Edit';
+import {auth} from './index';
 
 class App extends React.Component {
+
+    componentDidMount(): void {
+        if (!auth.isAuthenticated()) {
+            history.push('/login');
+        }
+    }
+
     render() {
         return (
             <div className="App">
@@ -19,7 +28,8 @@ class App extends React.Component {
                         <Router history={history}>
                             <Switch>
                                 <Route path={'/login'} component={Login}/>
-                                <Route path="/callback" component={Callback}/>
+                                <Route path={'/callback'} component={Callback}/>
+                                <Route path={'/edit'} component={Edit}/>
                                 <Route path={'/'} component={Dashboard}/>
                             </Switch>
                         </Router>

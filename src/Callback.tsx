@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {auth} from './index';
+import {Container} from 'semantic-ui-react';
 
 interface StateProps {
 
@@ -18,7 +19,11 @@ export const Callback = connect(mapStateToProps)(
         }
 
         render(): React.ReactNode {
-            return <p>Authenticating ...</p>;
+            return (
+                <Container>
+                    <p>Authenticating ...</p>
+                </Container>
+            );
         }
     }
 );
